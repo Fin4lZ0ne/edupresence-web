@@ -32,7 +32,7 @@
     $(window).on("scroll", function() {
         var header = $("#header");
         var imgLight = $(".logo-light");
-        var imgDark = $(".logo-dark");
+        var imgDark = $(".logo-dark1");
         var btnTalk = $("#btn-talk");
 
 

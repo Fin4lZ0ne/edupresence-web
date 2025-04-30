@@ -1,15 +1,5 @@
 <?php
 
-/**
- * API Responser Trait
- * Stabilize JSON response output
- * ---------------------------------
- *
- * @author irsyadulibad | github.com/irsyadulibad
- * @see https://gist.github.com/irsyadulibad/050e025c7d2cf27a488ee03ab11e7af1
- *
- */
-
 namespace App\Traits;
 
 use Illuminate\Pagination\LengthAwarePaginator;

@@ -11,7 +11,7 @@
                     alt="{{ $alt }}"
                 >
                 <img
-                    class="w-25 logo-dark1 hidden"
+                    class="w-25 logo-dark hidden"
                     src="{{ asset('img/logo-dark1.png') }}"
                     alt="{{ $alt }}"
                 >

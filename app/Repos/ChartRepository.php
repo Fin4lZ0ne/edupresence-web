@@ -32,29 +32,34 @@ class ChartRepository
     public function getData(int $months)
     {
         $month = now()->subMonth($months - 1);
+
         $attendances = Attendance::selectRaw('MONTH(`date`) AS month, COUNT(*) AS total, status')
-            ->where('date', '>=', $month)
+            ->where('date', '>=', $month->startOfMonth())
             ->groupByRaw('MONTH(date), status')
             ->get();
 
-        $months = array_reverse(range(now()->format('m'), $month->format('m')));
+        $monthNumbers = [];
+        for ($i = $months - 1; $i >= 0; $i--) {
+            $monthNumbers[] = now()->subMonthsNoOverflow($i)->format('n');
+        }
 
         return [
-            'months' => array_map(fn ($month) => $this->months[$month], $months),
-            'series' => array_map(function ($status) use ($months, $attendances) {
+            'months' => array_map(fn($month) => $this->months[$month], $monthNumbers),
+            'series' => array_map(function ($status) use ($monthNumbers, $attendances) {
                 $status = AttendanceStatus::tryFrom($status);
 
                 return [
                     'name' => $this->status[$status->value],
-                    'data' => $this->seriesData($months, $status, $attendances),
+                    'data' => $this->seriesData($monthNumbers, $status, $attendances),
                 ];
             }, AttendanceStatus::values()),
         ];
     }
 
+
     private function seriesData(array $months, AttendanceStatus $status, $attendances)
     {
-        $filtered = $attendances->filter(fn ($att) => $att->status == $status);
+        $filtered = $attendances->filter(fn($att) => $att->status == $status);
 
         return array_map(function ($month) use ($filtered) {
             return $filtered->where('month', $month)->first()->total ?? 0;

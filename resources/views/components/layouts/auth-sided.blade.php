@@ -42,7 +42,7 @@
                             class="text-nowrap logo-img d-block px-4 py-9 w-100"
                         >
                             <img
-                                src="{{ asset('img/logo-dark.png') }}"
+                                src="{{ asset('img/logo-dark1.png') }}"
                                 class="dark-logo"
                                 alt="Logo-Dark"
                                 width="125"
