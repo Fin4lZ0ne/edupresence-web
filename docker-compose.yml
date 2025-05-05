@@ -1,48 +1,8 @@
 services:
-    app:
-        build:
-            args:
-                user: ${DOCKER_USER}
-                uid: ${DOCKER_UID}
-            context: .
-            dockerfile: Dockerfile
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
-        container_name: edupresence-app
-        restart: unless-stopped
-        working_dir: /var/www/
-        volumes:
-            - .:/var/www
-        networks:
-            - edupresence-network
-    apache:
-        image: php:8.2-apache
-        container_name: edupresence-apache
-        restart: unless-stopped
-        ports:
-            - 8000:80
-        volumes:
-            - ./:/var/www/html
-            - ./.docker/apache/custom.conf:/etc/apache2/sites-enabled/000-default.conf
-        networks:
-            - edupresence-network
-    queue:
-        build:
-            args:
-                user: ${DOCKER_USER}
-                uid: ${DOCKER_UID}
-            context: .
-            dockerfile: Dockerfile
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
-        container_name: edupresence-queue
-        restart: unless-stopped
-        working_dir: /var/www/
-        volumes:
-            - .:/var/www
-        command: php artisan queue:listen
-        networks:
-            - edupresence-network
-networks:
-    edupresence-network:
-        driver: bridge
+  app:
+    build: .
+    container_name: edupresence
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8080:80"
