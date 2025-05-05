@@ -10,13 +10,13 @@
                 class="text-nowrap logo-img"
             >
                 <img
-                    src="/img/logo.svg"
+                    src="/img/logo-edu2.svg"
                     class="dark-logo"
                     width="140"
                     alt=""
                 />
                 <img
-                    src="/img/logo.svg"
+                    src="/img/logo-edu2.svg"
                     class="light-logo"
                     width="140"
                     alt=""
