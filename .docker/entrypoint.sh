@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+chown -R www-data:www-data storage
 if [ ! -d "vendor" ]; then
     composer install --no-interaction --optimize-autoloader
 fi

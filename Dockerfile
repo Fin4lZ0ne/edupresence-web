@@ -11,7 +11,7 @@ RUN apt update && apt install -y \
 
 COPY .docker/apache/default.conf /etc/apache2/sites-available/000-default.conf
 
-RUN a2enmod
+RUN a2enmod rewrite
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql
 
