@@ -34,12 +34,14 @@ jobs:
         # https://stackoverflow.com/a/70447517
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p 10000 -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       - 
         name: connect and pull
-        run: ssh -p 10000 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
+        run: |
+          ssh -p 10000 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+          cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit
       - 
         name: cleanup
         run: rm -rf ~/.ssh
