@@ -32,7 +32,7 @@
                         <div class="col-12 mb-3">
                             <x-form.input
                                 name="form.nik"
-                                label="NIK"
+                                label="NIP"
                             />
                         </div>
                         <div class="col-12 mb-3">
