@@ -29,20 +29,14 @@ jobs:
           push: true
           tags: dvdardiansyahhh/edupresence-web:latest
       -
-        name: Deploy to server via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker pull dvdardiansyahhh/edupresence-web:latest
-
-            docker stop edupresence || true
-            docker rm edupresence || true
-
-            docker run -d \
-              --name edupresence \
-              -p 8080:80 \
-              --add-host=host.docker.internal:host-gateway \
-              dvdardiansyahhh/edupresence-web:latest
+        name: install ssh keys
+        # check this thread to understand why its needed:
+        # https://stackoverflow.com/a/70447517
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+      - name: connect and pull
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
+      - name: cleanup
+        run: rm -rf ~/.ssh
