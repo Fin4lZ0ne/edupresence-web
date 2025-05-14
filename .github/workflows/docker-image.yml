@@ -28,3 +28,21 @@ jobs:
         with:
           push: true
           tags: dvdardiansyahhh/edupresence-web:latest
+      -
+        name: Deploy to server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker pull dvdardiansyahhh/edupresence-web:latest
+
+            docker stop edupresence || true
+            docker rm edupresence || true
+
+            docker run -d \
+              --name edupresence \
+              -p 8080:80 \
+              --add-host=host.docker.internal:host-gateway \
+              dvdardiansyahhh/edupresence-web:latest

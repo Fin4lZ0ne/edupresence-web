@@ -23,4 +23,4 @@ COPY . .
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 80
-CMD [".docker/entrypoint.sh"]
+CMD ["sh", ".docker/entrypoint.sh"]
