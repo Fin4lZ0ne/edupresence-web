@@ -22,12 +22,12 @@ jobs:
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          tags: dvdardiansyahhh/edupresence-web:latest
+      # -
+      #   name: Build and push
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     push: true
+      #     tags: dvdardiansyahhh/edupresence-web:latest
       -
         name: install ssh keys
         # check this thread to understand why its needed:
@@ -35,13 +35,12 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/github-actions-key
-          chmod 700 ~/.ssh/github-actions-key
+          chmod 600 ~/.ssh/github-actions-key
           ssh-keyscan -p 10000 -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       - 
         name: connect and pull
         run: |
-          ssh -p 10000 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull"
-
+          ssh -i ~/.ssh/github-actions-key -o StrictHostKeyChecking=no -p 10000 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull"
       - 
         name: cleanup
         run: rm -rf ~/.ssh
