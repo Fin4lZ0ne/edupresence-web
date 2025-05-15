@@ -44,7 +44,8 @@ jobs:
             cd ${{ secrets.WORK_DIR }} && \
             git checkout ${{ secrets.MAIN_BRANCH }} && \
             git branch --set-upstream-to=origin/${{ secrets.MAIN_BRANCH }} ${{ secrets.MAIN_BRANCH }} && \
-            git pull"
+            git pull \
+            git stash pop || true"
       - 
         name: cleanup
         run: rm -rf ~/.ssh
