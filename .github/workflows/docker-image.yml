@@ -32,9 +32,9 @@ jobs:
         name: install ssh keys
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p 10000 -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/github-actions-key
+          chmod 600 ~/.ssh/github-actions-key
+          ssh -i ~/.ssh/github-actions-key -o StrictHostKeyChecking=no -p 10000 -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       - 
         name: connect and pull
         run: |
