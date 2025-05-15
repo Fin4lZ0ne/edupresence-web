@@ -1,5 +1,5 @@
 <div class="row">
-    <x-slot:title>Data Pegawai</x-slot:title>
+    <x-slot:title>Data Pegawa</x-slot:title>
     <x-slot:navigation>
         <li
             class="breadcrumb-item"
