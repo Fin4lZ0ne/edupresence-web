@@ -40,7 +40,11 @@ jobs:
       - 
         name: connect and pull
         run: |
-          ssh -i ~/.ssh/github-actions-key -o StrictHostKeyChecking=no -p 10000 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git pull ${{ secrets.MAIN_BRANCH }}"
+          ssh -i ~/.ssh/github-actions-key -o StrictHostKeyChecking=no -p 10000 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+            cd ${{ secrets.WORK_DIR }} && \
+            git checkout ${{ secrets.MAIN_BRANCH }} && \
+            git branch --set-upstream-to=origin/${{ secrets.MAIN_BRANCH }} ${{ secrets.MAIN_BRANCH }} && \
+            git pull"
       - 
         name: cleanup
         run: rm -rf ~/.ssh
