@@ -12,15 +12,6 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-volumes:
-  employee-img:
-    external: true
-
-networks:
-  edupresence-net:
-    external: true
-    # Testing
-
   redis:
     image: redis:latest
     container_name: redis
@@ -48,4 +39,11 @@ networks:
     #   - laravel
     
 volumes:
+  employee-img:
+    external: true
   grafana-storage:
+
+networks:
+  edupresence-net:
+    external: true
+    # Testing
