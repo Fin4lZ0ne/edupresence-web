@@ -18,6 +18,10 @@ use App\Livewire\Schedule\ScheduleCreate;
 use App\Livewire\SubjectPage;
 use App\Livewire\Schedule\SchedulePage;
 use App\Livewire\SchoolPage;
+
+use App\Livewire\ProfilePage;
+
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -61,6 +65,8 @@ Route::middleware('auth')->group(function () {
     Route::get('schedules', SchedulePage::class)->name('schedules');
     Route::get('schedules/{classroom}/create', ScheduleCreate::class)
         ->name('schedules.create');
+
+    Route::get('profile', ProfilePage::class)->name('profile');
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('school', SchoolPage::class)->name('school');

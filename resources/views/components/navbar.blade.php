@@ -156,7 +156,7 @@
                                 </div>
                                 <div class="message-body">
                                     <a
-                                        href="./page-user-profile.html"
+                                        href="{{ route('profile') }}"
                                         class="py-8 px-7 mt-8 d-flex align-items-center"
                                     >
                                         <span
