@@ -75,10 +75,11 @@ Route::middleware('auth')->group(function () {
     Route::get('logout', function () {
         Auth::logout();
         Session::regenerate();
-
+        
         return to_route('login');
     })->name('logout');
 });
+
 
 Route::get('/metrics', function () {
     $storage = new RedisStorage([
