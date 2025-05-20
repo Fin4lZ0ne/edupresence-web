@@ -22,6 +22,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
+use Illuminate\Support\Facades\Redis;
+use Prometheus\CollectorRegistry;
+use Prometheus\RenderTextFormat;
+use Prometheus\Storage\Redis as RedisStorage;
+
 Route::get('/', fn () => view('pages.home'))->name('home');
 
 Route::middleware('guest')->group(function () {
@@ -67,4 +72,24 @@ Route::middleware('auth')->group(function () {
 
         return to_route('login');
     })->name('logout');
+});
+
+Route::get('/metrics', function () {
+    $storage = new RedisStorage([
+        'host' => 'redis', // sesuai nama service di docker-compose
+    ]);
+
+    $registry = new CollectorRegistry($storage);
+
+    try {
+        $counter = $registry->registerCounter('app', 'requests_total', 'Total HTTP Requests');
+    } catch (\Prometheus\Exception\MetricsRegistrationException $e) {
+        $counter = $registry->getCounter('app', 'requests_total');
+    }
+
+    $counter->inc();
+
+    $renderer = new RenderTextFormat();
+    return response($renderer->render($registry->getMetricFamilySamples()))
+        ->header('Content-Type', RenderTextFormat::MIME_TYPE);
 });
