@@ -5,8 +5,12 @@ RUN apt update && apt install -y \
     libjpeg-dev \
     libfreetype6-dev \
     libzip-dev \
+    libonig-dev \
+    curl \
     zip \
     unzip \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
     && rm -rf /var/lib/apt/lists/*
 
 COPY .docker/apache/default.conf /etc/apache2/sites-available/000-default.conf
