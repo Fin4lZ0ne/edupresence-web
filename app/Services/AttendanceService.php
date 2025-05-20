@@ -69,7 +69,7 @@ class AttendanceService
         $filename = $file->getClientOriginalName();
         $res = Http::attach('image', file_get_contents($file), $filename)
             ->post(config('app.ai_url') . '/recognize');
-
+            
         if (!$res->ok())
             throw new AttendanceException('Terjadi kesalahan saat mendeteksi wajah');
 
