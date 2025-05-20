@@ -15,6 +15,14 @@ RUN apt update && apt install -y \
 
 COPY .docker/apache/default.conf /etc/apache2/sites-available/000-default.conf
 
+RUN echo "upload_max_filesize=50M" > /usr/local/etc/php/conf.d/uploads.ini \
+ && echo "post_max_size=100M" >> /usr/local/etc/php/conf.d/uploads.ini
+ 
+RUN echo "<Directory /var/www/html>" > /etc/apache2/conf-available/upload-limit.conf \
+ && echo "    LimitRequestBody 104857600" >> /etc/apache2/conf-available/upload-limit.conf \
+ && echo "</Directory>" >> /etc/apache2/conf-available/upload-limit.conf \
+ && a2enconf upload-limit
+
 RUN a2enmod rewrite
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql

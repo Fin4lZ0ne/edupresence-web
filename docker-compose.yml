@@ -4,10 +4,23 @@ services:
     container_name: edupresence
     volumes:
       - ./:/var/www/html
+      - employee-img:/var/www/html/storage/app/public/employees
     ports:
       - "8080:80"
+    networks:
+      - edupresence-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
+<<<<<<< HEAD
+
+volumes:
+  employee-img:
+    external: true
+
+networks:
+  edupresence-net:
+    external: true
+=======
     # Testing
 
   redidocs:
@@ -38,3 +51,4 @@ services:
     
 volumes:
   grafana-storage:
+>>>>>>> d20a68b9a090135339e11ac1c5271267ddbff221
