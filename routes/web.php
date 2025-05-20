@@ -5,6 +5,7 @@ use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\SubjectController;
+
 use App\Livewire\AttendancePage;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
@@ -21,15 +22,15 @@ use App\Livewire\SchoolPage;
 
 use App\Livewire\ProfilePage;
 
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
-use Illuminate\Support\Facades\Redis;
 use Prometheus\CollectorRegistry;
 use Prometheus\RenderTextFormat;
-use Prometheus\Storage\Redis as RedisStorage;
+use Prometheus\Storage\Redis;
+
+
 
 Route::get('/', fn () => view('pages.home'))->name('home');
 
@@ -79,7 +80,6 @@ Route::middleware('auth')->group(function () {
         return to_route('login');
     })->name('logout');
 });
-
 
 Route::get('/metrics', function () {
     $storage = new RedisStorage([
