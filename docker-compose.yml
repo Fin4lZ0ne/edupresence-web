@@ -11,6 +11,7 @@ services:
       - edupresence-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
+      - "eduprence.my.id:host-gateway"
 
   redis:
     image: redis:latest
