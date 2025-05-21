@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.4",
         "mjaschen/phpgeo": "^5.0",
+        "promphp/prometheus_client_php": "^0.6.0",
         "pusher/pusher-php-server": "^7.2",
         "yajra/laravel-datatables-oracle": "^10.11"
     },
