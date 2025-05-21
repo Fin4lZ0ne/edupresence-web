@@ -116,7 +116,11 @@
         </div>
     </div>
 
+    {{-- @include('components.modals.profile') --}}
+    @include('pages.profile')
+
     <x-scripts />
+
 </body>
 
 </html>

@@ -26,9 +26,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
+// use Illuminate\Support\Facades\Redis;
 use Prometheus\CollectorRegistry;
 use Prometheus\RenderTextFormat;
-use Prometheus\Storage\Redis;
+use Prometheus\Storage\Redis as RedisStorage;
+// use Prometheus\CollectorRegistry;
+// use Prometheus\RenderTextFormat;
+// use Prometheus\Storage\Redis;
 
 
 
@@ -67,7 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::get('schedules/{classroom}/create', ScheduleCreate::class)
         ->name('schedules.create');
 
-    Route::get('profile', ProfilePage::class)->name('profile');
+    Route::get('profile', [ProfilePage::class, 'data'])->name('profile.data');
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('school', SchoolPage::class)->name('school');
