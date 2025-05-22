@@ -1,4 +1,4 @@
-name: Docker Image CI/CD
+name: Docker Image CI
 
 on:
   push:
@@ -44,10 +44,7 @@ jobs:
             cd ${{ secrets.WORK_DIR }} && \
             git checkout ${{ secrets.MAIN_BRANCH }} && \
             git branch --set-upstream-to=origin/${{ secrets.MAIN_BRANCH }} ${{ secrets.MAIN_BRANCH }} && \
-            git pull \
-        # docker pull dvdardiansyahhh/edupresence-web:latest \
-        # docker stop my_container || true && docker rm my_container || true
-        # docker run -d --name my_container dvdardiansyahhh/edupresence-web:latest"
+            git pull"
       - 
         name: cleanup
         run: rm -rf ~/.ssh
