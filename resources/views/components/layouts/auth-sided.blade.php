@@ -19,7 +19,7 @@
 <body>
     <div class="preloader">
         <img
-            src="{{ asset('img/preloader.svg') }}"
+            src="{{ asset('img/preloader2.svg') }}"
             alt="loader"
             class="lds-ripple img-fluid"
         >
