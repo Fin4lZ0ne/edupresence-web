@@ -47,12 +47,7 @@
                                 alt="Logo-Dark"
                                 width="125"
                             />
-                            <img
-                                src="{{ asset('img/logo-light.png') }}"
-                                class="light-logo"
-                                alt="Logo-light"
-                                width="125"
-                            />
+                            
                         </a>
                         <div class="d-none d-xl-flex align-items-center justify-content-center h-75">
                             <img
