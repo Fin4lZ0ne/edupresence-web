@@ -7,6 +7,55 @@ on:
     branches: [ "main" ]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: apsensi
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, pdo, mysql, xml, bcmath
+          coverage: none
+
+      - name: Install Composer Dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Copy .env
+        run: cp .env .env.testing
+
+      - name: Set testing environment DB config
+        run: |
+          sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env.testing
+          sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env.testing
+          sed -i 's/DB_DATABASE=.*/DB_DATABASE=apsensi/' .env.testing
+          sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env.testing
+          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=root/' .env.testing
+
+      - name: Generate App Key
+        run: php artisan key:generate --env=testing
+
+      - name: Run Migrations
+        run: php artisan migrate --env=testing --force
+
+      - name: Run Laravel Tests
+        run: php artisan test --env=testing
   docker:
     runs-on: ubuntu-latest
     steps:
@@ -45,9 +94,9 @@ jobs:
             git checkout ${{ secrets.MAIN_BRANCH }} && \
             git branch --set-upstream-to=origin/${{ secrets.MAIN_BRANCH }} ${{ secrets.MAIN_BRANCH }} && \
             git pull \
-            docker pull dvdardiansyahhh/edupresence-web:latest \
-            docker stop my_container || true && docker rm my_container || true
-            docker run -d --name my_container dvdardiansyahhh/edupresence-web:latest"
+        # docker pull dvdardiansyahhh/edupresence-web:latest \
+        # docker stop my_container || true && docker rm my_container || true
+        # docker run -d --name my_container dvdardiansyahhh/edupresence-web:latest"
       - 
         name: cleanup
         run: rm -rf ~/.ssh
