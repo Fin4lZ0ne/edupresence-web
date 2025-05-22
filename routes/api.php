@@ -48,4 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', 'show')->name('user');
         Route::match(['put', 'patch'], '/', 'update')->name('user.update');
     });
+
+    // Route::post('profile/update', [ProfilePage::class, 'update'])->name('profile.update');
+    // Route::post('/updated-profile-photo', [ProfilePage::class, 'updatedPhoto'])->name('profile.updated-photo');
 });

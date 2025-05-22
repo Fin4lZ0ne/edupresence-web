@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 
@@ -8,39 +10,13 @@
 <script src="{{ asset('js/template.init.js') }}"></script>
 <script src="{{ asset('js/sidebarmenu.js') }}"></script>
 <script src="{{ asset('js/template.custom.js') }}"></script>
+<script src="{{ asset('js/to_profile.js') }}"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const btn = document.getElementById('btnShowProfile');
+<meta name="profile-data-url" content="{{ route('profile.data') }}">
+<meta name="profile-update-url" content="{{ route('profile.update') }}">
+<meta name="profile-photo-update-url" content="{{ route('profile.updated-photo') }}">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
-        if (btn) {
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                fetch("{{ route('profile.data') }}")
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Gagal mengambil data. Mungkin belum login.');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        document.getElementById('profile-nama').textContent = data.nama ?? '-';
-                        document.getElementById('profile-ttl').textContent = data.ttl ?? '-';
-                        document.getElementById('profile-gender').textContent = data.gender ?? '-';
-                        document.getElementById('profile-nip').textContent = data.nip ?? '-';
-                        document.getElementById('profile-username').textContent = data.username ?? '-';
-                        document.getElementById('profile-email').textContent = data.email ?? '-';
-                        document.getElementById('profile-alamat').textContent = data.alamat ?? '-';
-
-                        const modal = new bootstrap.Modal(document.getElementById('profileModal'));
-                        modal.show();
-                    })
-                    .catch(error => alert(error.message));
-            });
-        }
-    });
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

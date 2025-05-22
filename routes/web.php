@@ -6,6 +6,8 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\SubjectController;
 
+use App\Http\Controllers\ProfilePage;
+
 use App\Livewire\AttendancePage;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
@@ -19,8 +21,6 @@ use App\Livewire\Schedule\ScheduleCreate;
 use App\Livewire\SubjectPage;
 use App\Livewire\Schedule\SchedulePage;
 use App\Livewire\SchoolPage;
-
-use App\Livewire\ProfilePage;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -71,7 +71,11 @@ Route::middleware('auth')->group(function () {
     Route::get('schedules/{classroom}/create', ScheduleCreate::class)
         ->name('schedules.create');
 
-    Route::get('profile', [ProfilePage::class, 'data'])->name('profile.data');
+    Route::get('profile/data', [ProfilePage::class, 'data'])->name('profile.data');
+    Route::post('profile/update', [ProfilePage::class, 'update'])->name('profile.update');
+    Route::post('/updated-profile-photo', [ProfilePage::class, 'updatedPhoto'])->name('profile.updated-photo');
+
+
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('school', SchoolPage::class)->name('school');
