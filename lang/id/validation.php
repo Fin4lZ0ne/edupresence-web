@@ -187,7 +187,7 @@ return [
     */
 
     'attributes' => [
-        'nik' => 'NIK',
+        'nik' => 'NIP',
         'fullname' => 'Nama Lengkap',
         'birthplace' => 'Tempat Lahir',
         'birthdate' => 'Tanggal Lahir',

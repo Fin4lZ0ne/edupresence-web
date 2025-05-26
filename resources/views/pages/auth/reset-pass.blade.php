@@ -40,13 +40,13 @@
                                 for="exampleInputEmail1"
                                 class="form-label fw-semibold"
                             >Masukkan 6 digit kode</label>
-                            <div class="d-flex align-items-center gap-2 gap-sm-3">
+                            <div class="d-flex justify-content-center gap-2 gap-sm-3">
                                 @for ($i = 0; $i < 6; $i++)
                                     <input
                                         type="text"
-                                        class="form-control code-input"
-                                        placeholder=""
-                                        maxLength="1"
+                                        class="form-control text-center code-input"
+                                        style="width: 50px; height: 50px; font-size: 24px; font-weight: bold; border: 1px solid #ccc; border-radius: 8px;"
+                                        maxlength="1"
                                         wire:model="code.{{ $i }}"
                                     >
                                 @endfor

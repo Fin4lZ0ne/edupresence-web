@@ -66,11 +66,11 @@ document.addEventListener('DOMContentLoaded', function () {
             body: JSON.stringify(data),
         })
             .then(res => res.json())
-            .then(() => {
-                bootstrap.Modal.getInstance(document.getElementById('editProfileModal')).hide();
-                btn.click();
-                alert('Profil berhasil diperbarui');
-            })
+            // .then(() => {
+            //     bootstrap.Modal.getInstance(document.getElementById('editProfileModal')).hide();
+            //     btn.click();
+            //     alert('Profil berhasil diperbarui');
+            // })
             .catch(err => alert(err.message));
     });
 

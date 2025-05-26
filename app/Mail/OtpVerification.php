@@ -30,7 +30,7 @@ class OtpVerification extends Mailable
     {
         return new Envelope(
             from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
-            subject: 'Kode Verifikasi Apsensi',
+            subject: 'Kode Verifikasi Edupresence',
         );
     }
 
