@@ -9,25 +9,13 @@
 
                     <form wire:submit.prevent="resetPassword">
                         <div class="mb-2">
-                            <x-form.input
-                                type="password"
-                                label="Password Baru"
-                                name="password"
-                                bold="true"
-                            />
+                            <x-form.input type="password" label="Password Baru" name="password" bold="true" />
                         </div>
                         <div class="mb-4">
-                            <x-form.input
-                                type="password"
-                                label="Konfirmasi Password"
-                                name="password_confirmation"
-                                bold="true"
-                            />
+                            <x-form.input type="password" label="Konfirmasi Password" name="password_confirmation"
+                                bold="true" />
                         </div>
-                        <button
-                            type="submit"
-                            class="btn btn-primary w-100 py-8 mb-2 rounded-2"
-                        >Konfirmasi</button>
+                        <button type="submit" class="btn btn-primary w-100 py-8 mb-2 rounded-2">Konfirmasi</button>
                     </form>
                 @else
                     <h3 class="fw-bolder fs-7 mb-3">Kode Verifikasi</h3>
@@ -36,37 +24,24 @@
                     <h6 class="fw-bolder mb-5">{{ obfuscate_email($email) }}</h6>
                     <form wire:submit="verify">
                         <div class="mb-3">
-                            <label
-                                for="exampleInputEmail1"
-                                class="form-label fw-semibold"
-                            >Masukkan 6 digit kode</label>
+                            <label for="exampleInputEmail1" class="form-label fw-semibold">Masukkan 6 digit kode</label>
                             <div class="d-flex justify-content-center gap-2 gap-sm-3">
                                 @for ($i = 0; $i < 6; $i++)
-                                    <input
-                                        type="text"
-                                        class="form-control text-center code-input"
+                                    <input type="text" class="form-control text-center code-input"
                                         style="width: 50px; height: 50px; font-size: 24px; font-weight: bold; border: 1px solid #ccc; border-radius: 8px;"
-                                        maxlength="1"
-                                        wire:model="code.{{ $i }}"
-                                    >
+                                        maxlength="1" wire:model="code.{{ $i }}">
                                 @endfor
                             </div>
                             @error('code')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <button
-                            type="submit"
-                            class="btn btn-primary w-100 py-8 mb-4"
-                        >Verifikasi</button>
+                        <button type="submit" class="btn btn-primary w-100 py-8 mb-4">Verifikasi</button>
                         @if ($canResend)
                             <div class="d-flex align-items-center">
                                 <p class="fs-4 mb-0 text-dark">Tidak mendapatkan kode?</p>
-                                <a
-                                    class="text-primary fw-medium ms-2"
-                                    href="#"
-                                    wire:click.prevent="resend"
-                                >kirim ulang</a>
+                                <a class="text-primary fw-medium ms-2" href="#" wire:click.prevent="resend">kirim
+                                    ulang</a>
                             </div>
                         @endif
                     </form>
@@ -77,21 +52,28 @@
 
     @push('script')
         <script>
-            $('.code-input').keyup(function(e) {
-                const numberRegex = /^[0-9]$/;
+            // Ganti script keyup lama dengan ini
+            $('.code-input').on('input', function() {
+                const input = $(this);
+                const val = input.val();
 
-                if (!numberRegex.test(e.key))
-                    return;
-
-                if (this.value.length < this.maxLength)
-                    return;
-
-                $(this).next().focus();
+                // Hanya lanjut kalau input angka
+                if (/^[0-9]$/.test(val)) {
+                    input.next('.code-input').focus();
+                } else {
+                    input.val(''); // Hapus karakter tidak valid
+                }
             });
 
-            $('.code-input').keydown(function(e) {
-                if (e.key == 'ArrowLeft')
-                    $(this).prev().focus();
+            // Tambahkan script ini sebagai tambahan
+            $('.code-input').on('keydown', function(e) {
+                if (e.key === 'Backspace' && $(this).val() === '') {
+                    $(this).prev('.code-input').focus();
+                } else if (e.key === 'ArrowLeft') {
+                    $(this).prev('.code-input').focus();
+                } else if (e.key === 'ArrowRight') {
+                    $(this).next('.code-input').focus();
+                }
             });
 
             Livewire.on('otp-error', (msg) => {

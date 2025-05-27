@@ -7,6 +7,38 @@ on:
     branches: [ "main" ]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+      - name: Copy .env.testing
+        run: |
+          cp .env.example .env.testing
+          echo "DB_CONNECTION=sqlite" >> .env.testing
+          echo "DB_DATABASE=database/database.sqlite" >> .env.testing
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist
+      - name: Generate key
+        run: php artisan key:generate --env=testing
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+      - name: Create SQLite Database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+      - name: Run PHPUnit Tests
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+        run: |
+          vendor/bin/phpunit --testsuite Unit
+          vendor/bin/phpunit --testsuite Feature
+          
   docker:
     runs-on: ubuntu-latest
     steps:
