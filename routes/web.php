@@ -35,6 +35,7 @@ use Prometheus\Storage\Redis as RedisStorage;
 // use Prometheus\Storage\Redis;
 
 use App\Exports\AttendanceExport;
+use App\Exports\AttendanceTodayExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', fn () => view('pages.home'))->name('home');
