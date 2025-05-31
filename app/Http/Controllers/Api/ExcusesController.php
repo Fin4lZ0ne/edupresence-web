@@ -32,6 +32,6 @@ class ExcusesController extends Controller
 
         return $this->success([
             'excuses' => ExcuseResource::make($excuse),
-        ], 'Berhasil menambahkan Izin!');
+        ],  'Berhasil menambahkan Izin!');
     }
 }
