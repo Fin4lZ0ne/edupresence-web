@@ -11,6 +11,8 @@ RUN apt update && apt install -y \
     unzip \
     && pecl install redis \
     && docker-php-ext-enable redis \
+    && ln -snf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime \
+    && echo "Asia/Jakarta" > /etc/timezone \
     && rm -rf /var/lib/apt/lists/*
 
 COPY .docker/apache/default.conf /etc/apache2/sites-available/000-default.conf

@@ -37,6 +37,7 @@ use Prometheus\Storage\Redis as RedisStorage;
 
 
 Route::get('/', fn () => view('pages.home'))->name('home');
+Route::get('/test', fn () => date("H:i:s Y-m-d"));
 
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)->name('login');
