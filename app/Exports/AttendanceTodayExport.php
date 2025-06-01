@@ -15,12 +15,12 @@ class AttendanceTodayExport implements FromCollection, WithHeadings
             ->get()
             ->map(function ($att) {
                 return [
-                    'Nama Guru' => $att->employee->fullname,
-                    'Pelajaran' => $att->subject->name,
-                    'Tanggal' => $att->date->format('d/m/Y'),
-                    'Status' => $att->status,
-                    'Jam Masuk' => $att->time_start ?? '-',
-                    'Jam Keluar' => $att->time_end ?? '-',
+                    'Nama Guru'   => $att->employee->fullname ?? '-',
+                    'Pelajaran'   => $att->subject->name ?? '-',
+                    'Tanggal'     => \Carbon\Carbon::parse($att->date)->format('d/m/Y'),
+                    'Status'      => ucfirst($att->status->value ?? 'Belum Diisi'),
+                    'Jam Masuk'   => $att->time_start ?? '-',
+                    'Jam Keluar'  => $att->time_end ?? '-',
                 ];
             });
     }
