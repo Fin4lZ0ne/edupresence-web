@@ -41,6 +41,15 @@
                     wire:ignore.self
                 >
                     <div class="border py-5 rounded mt-4 row justify-content-center">
+                        <div class="d-flex justify-content-end mb-3">
+                            <a
+                                href="{{ route('export.attendance.today') }}"
+                                class="btn btn-success"
+                                target="_blank"
+                            >
+                                <i class="ti ti-download me-1"></i> Unduh Excel Hari Ini
+                            </a>
+                        </div>
                         @forelse ($todayAtts as $att)
                             <x-attendance.daily-item :attendance="$att" />
                         @empty
@@ -61,6 +70,15 @@
                     id="all-tab"
                     wire:ignore.self
                 >
+                <div class="d-flex justify-content-end mb-3">
+                    <a
+                        href="{{ route('export.attendance') }}"
+                        class="btn btn-success mb-3"
+                        target="_blank"
+                    >
+                        <i class="ti ti-download me-1"></i> Unduh Excel
+                    </a>
+                </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead>

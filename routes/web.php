@@ -34,7 +34,9 @@ use Prometheus\Storage\Redis as RedisStorage;
 // use Prometheus\RenderTextFormat;
 // use Prometheus\Storage\Redis;
 
-
+use App\Exports\AttendanceExport;
+use App\Exports\AttendanceTodayExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', fn () => view('pages.home'))->name('home');
 Route::get('/test', fn () => date("H:i:s Y-m-d"));
@@ -77,6 +79,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/updated-profile-photo', [ProfilePage::class, 'updatedPhoto'])->name('profile.updated-photo');
 
 
+    Route::get('/export-attendance', function () {
+        return Excel::download(new AttendanceExport, 'log-presensi.xlsx');
+    })->name('export.attendance');
+
+    Route::get('/export-attendance-today', function () {
+        return Excel::download(new AttendanceTodayExport, 'log-presensi-hari-ini.xlsx');
+    })->name('export.attendance.today');
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('school', SchoolPage::class)->name('school');
