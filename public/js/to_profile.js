@@ -35,7 +35,22 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!lastFetchedProfile) return;
 
             document.getElementById('edit-nama').value = lastFetchedProfile.nama ?? '';
-            document.getElementById('edit-ttl').value = lastFetchedProfile.ttl ?? '';
+            // Pastikan format tanggal sesuai YYYY-MM-DD jika ttl ada dan valid
+            if (lastFetchedProfile.ttl) {
+                // Coba parse dan format ke YYYY-MM-DD jika perlu
+                const date = new Date(lastFetchedProfile.ttl);
+                if (!isNaN(date.getTime())) {
+                    // Format ke YYYY-MM-DD
+                    const yyyy = date.getFullYear();
+                    const mm = String(date.getMonth() + 1).padStart(2, '0');
+                    const dd = String(date.getDate()).padStart(2, '0');
+                    document.getElementById('edit-ttl').value = `${yyyy}-${mm}-${dd}`;
+                } else {
+                    document.getElementById('edit-ttl').value = '';
+                }
+            } else {
+                document.getElementById('edit-ttl').value = '';
+            }
             document.getElementById('edit-gender').value =
                 lastFetchedProfile.gender.toLowerCase() === 'laki-laki' ? 'male' : 'female';
             document.getElementById('edit-nip').value = lastFetchedProfile.nip ?? '';
