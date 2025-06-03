@@ -37,16 +37,59 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('edit-nama').value = lastFetchedProfile.nama ?? '';
             // Pastikan format tanggal sesuai YYYY-MM-DD jika ttl ada dan valid
             if (lastFetchedProfile.ttl) {
-                // Coba parse dan format ke YYYY-MM-DD jika perlu
-                const date = new Date(lastFetchedProfile.ttl);
-                if (!isNaN(date.getTime())) {
-                    // Format ke YYYY-MM-DD
-                    const yyyy = date.getFullYear();
-                    const mm = String(date.getMonth() + 1).padStart(2, '0');
-                    const dd = String(date.getDate()).padStart(2, '0');
+                let ttl = lastFetchedProfile.ttl.trim();
+                // Deteksi format: jika sudah YYYY-MM-DD, langsung pakai
+                const isoMatch = ttl.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+                if (isoMatch) {
+                    // Sudah format ISO
+                    const yyyy = isoMatch[1];
+                    const mm = isoMatch[2].padStart(2, '0');
+                    const dd = isoMatch[3].padStart(2, '0');
                     document.getElementById('edit-ttl').value = `${yyyy}-${mm}-${dd}`;
                 } else {
-                    document.getElementById('edit-ttl').value = '';
+                    // Coba parse manual, dukung bulan angka, english, dan indonesia
+                    // Contoh input: 1 Januari 2000, 1 January 2000, 1 1 2000, 2000-1-1
+                    const bulanMap = {
+                        'januari': 1, 'februari': 2, 'maret': 3, 'april': 4, 'mei': 5, 'juni': 6,
+                        'juli': 7, 'agustus': 8, 'september': 9, 'oktober': 10, 'november': 11, 'desember': 12,
+                        'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6,
+                        'july': 7, 'august': 8, 'september': 9, 'october': 10, 'november': 11, 'december': 12
+                    };
+                    let d = null, m = null, y = null;
+                    // Pisahkan dengan spasi atau strip
+                    let parts = ttl.replace(/-/g, ' ').split(/\s+/);
+                    if (parts.length === 3) {
+                        // Cek urutan: DD MM YYYY atau YYYY MM DD
+                        if (parts[2].length === 4) {
+                            // DD MM YYYY
+                            d = parseInt(parts[0]);
+                            let bulan = parts[1].toLowerCase();
+                            m = bulanMap[bulan] || parseInt(bulan);
+                            y = parseInt(parts[2]);
+                        } else if (parts[0].length === 4) {
+                            // YYYY MM DD
+                            y = parseInt(parts[0]);
+                            let bulan = parts[1].toLowerCase();
+                            m = bulanMap[bulan] || parseInt(bulan);
+                            d = parseInt(parts[2]);
+                        }
+                    }
+                    if (d && m && y && !isNaN(d) && !isNaN(m) && !isNaN(y)) {
+                        const mm = String(m).padStart(2, '0');
+                        const dd = String(d).padStart(2, '0');
+                        document.getElementById('edit-ttl').value = `${y}-${mm}-${dd}`;
+                    } else {
+                        // Fallback: coba Date bawaan JS
+                        const date = new Date(ttl);
+                        if (!isNaN(date.getTime())) {
+                            const yyyy = date.getFullYear();
+                            const mm = String(date.getMonth() + 1).padStart(2, '0');
+                            const dd = String(date.getDate()).padStart(2, '0');
+                            document.getElementById('edit-ttl').value = `${yyyy}-${mm}-${dd}`;
+                        } else {
+                            document.getElementById('edit-ttl').value = '';
+                        }
+                    }
                 }
             } else {
                 document.getElementById('edit-ttl').value = '';
